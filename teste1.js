@@ -1,10 +1,8 @@
 let data = require("./fakeData");
 
 const getUser = (req, res) => {
-    // Adicionei uma normalização, deixando tudo minúscula e sem caracteres especiais, 
-    //desta forma a pesquisa não é case sensitive e não levará em consideração os caracteres especiais
-    const name = req.header.username;
 
+    const name = req.header.username;
     /*
     A busca está para trazer um único usuário, mas poderíamos trazer uma lista
      de usuários cujo o nome contém a string que está sendo passada, com as linhas 
@@ -16,13 +14,18 @@ const getUser = (req, res) => {
     //     res.status(404).send("Usuário não encontrado");
     // }
 
-    const user = data.find((d) => d.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == name);
+    /*
+        Adicionei uma normalização, deixando tudo minúscula e sem caracteres especiais, 
+        desta forma a pesquisa não é case sensitive e não levará em consideração os caracteres especiais, no entanto, é necessário informar nome e sobrenome
+    */
+    const user = data.find((d) => d.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") === name);
 
     if (!user) {
-        res.status(404).send("Usuário não encontrado");
+        return res.status(404).send("Usuário não encontrado");
     }
 
     user.counter = user.counter ? user.counter + 1 : 1;
+
     res.send(user);
 
 };

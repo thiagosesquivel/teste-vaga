@@ -1,12 +1,14 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
-var teste1 = require("./teste1");
-var teste2 = require("./teste2");
-var teste3 = require("./teste3");
-var teste4 = require("./teste4");
-var teste5 = require("./teste5");
+const teste1 = require("./teste1");
+const teste2 = require("./teste2");
+const teste3 = require("./teste3");
+const teste4 = require("./teste4");
+const teste5 = require("./teste5");
+const verifyIsHasNameParams = require('./middlewares/verifyIfHasNameParams');
+const verifyIfHasIdParams = require('./middlewares/verifyIfHasIdParams');
 
 
 app.set('view engine', 'jade');
@@ -14,12 +16,9 @@ app.set('view engine', 'jade');
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use(bodyParser.json());                        
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.send(`get user/ </br>
   get users/ </br>
   post users/ </br>
@@ -28,15 +27,15 @@ app.get('/', function(req, res){
   `);
 });
 
-app.get("/user", teste1.getUser);
+app.get("/user", verifyIsHasNameParams, teste1.getUser);
 app.get("/users", teste1.getUsers);
 app.post("/users", teste2)
-app.delete("/users", teste3)
-app.put("/users", teste4)
-app.get("/users/access", teste5);
+app.delete("/users/:id", verifyIfHasIdParams, teste3)
+app.put("/users/:id", verifyIfHasIdParams, teste4)
+app.get("/users/access", verifyIsHasNameParams, teste5);
 
 
-const port  = 3000;
-app.listen(port, function(){
+const port = 3010;
+app.listen(port, function () {
   console.log('Express server listening on port ' + port);
 });

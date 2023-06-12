@@ -9,6 +9,7 @@ module.exports = function (req, res) {
 
     reg.name = name ?? reg.name;
     reg.job = job ?? reg.job;
+    reg.counter = reg.counter ?  reg.counter : 0;
 
     res.send(reg);
 

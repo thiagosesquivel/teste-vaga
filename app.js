@@ -7,8 +7,10 @@ const teste2 = require("./teste2");
 const teste3 = require("./teste3");
 const teste4 = require("./teste4");
 const teste5 = require("./teste5");
+const teste6 = require("./teste6");
 const verifyIsHasNameParams = require('./middlewares/verifyIfHasNameParams');
 const verifyIfHasIdParams = require('./middlewares/verifyIfHasIdParams');
+const verifyJob = require('./middlewares/verifyJob');
 
 
 app.set('view engine', 'jade');
@@ -27,11 +29,12 @@ app.get('/', function (req, res) {
   `);
 });
 
+app.post('/login',teste6)
 app.get("/user", verifyIsHasNameParams, teste1.getUser);
 app.get("/users", teste1.getUsers);
 app.post("/users", teste2)
-app.delete("/users/:id", verifyIfHasIdParams, teste3)
-app.put("/users/:id", verifyIfHasIdParams, teste4)
+app.delete("/users/:id", verifyJob,verifyIfHasIdParams, teste3)
+app.put("/users/:id", verifyJob, verifyIfHasIdParams, teste4)
 app.get("/users/access", verifyIsHasNameParams, teste5);
 
 
